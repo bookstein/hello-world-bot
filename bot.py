@@ -30,12 +30,24 @@ def get_next_chunk():
   text_file.close()
   return chunk
 
-def tweet(message):
+def reply(api):
+  me = api.get_user('abunchofadvice')
+  print(me.screen_name)
+  someone_tweeted_at_me = api.search(q='@'+me.screen_name, rpp=1, count=1)[0]
+  # returns a Status object
+  print("someone tweeted at me:")
+  print(someone_tweeted_at_me)
+
+    # if someone_tweeted_at_me:
+    #     tweet(get_next_chunk, recipient)
+
+def tweet(message, recipient = ""):
   auth = tweepy.OAuthHandler(secrets.consumer_key, secrets.consumer_secret)
   auth.set_access_token(secrets.access_token, secrets.access_token_secret)
   api = tweepy.API(auth)
   auth.secure = True
   print("Posting message {}".format(message))
   api.update_status(status=message)
+#   reply(api)
 
 tweet(get_next_chunk())
