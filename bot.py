@@ -3,6 +3,10 @@ import secrets # shhhh
 import nltk # for sentence parsing
 nltk.download('punkt')
 
+def append_hashtag(chunk):
+  chunk += "\n#botdames"
+  return chunk
+
 def get_next_chunk():
   # open text file
   text_file = open('book.txt', 'r+')
@@ -11,11 +15,13 @@ def get_next_chunk():
   tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
   sentences = tokenizer.tokenize(text_string)
   # tweet the whole sentence if it's short enough
-  if len(sentences[0]) <= 140:
+  if len(sentences[0]) <= 130:
     chunk = sentences[0]
   # otherwise just print the first 140 characters
   else:
-    chunk = sentences[0][0:140]
+    chunk = sentences[0][0:130]
+
+  chunk = append_hashtag(chunk)
 
   # delete what we just tweeted from the text file
   text_file.seek(0)
